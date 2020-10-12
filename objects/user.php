@@ -57,7 +57,6 @@ class User{
 
         // bind values
         $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":roles", json_encode($this->roles));
         $stmt->bindParam(":password", $this->password);
         $stmt->bindParam(":phone", $this->phone);
         $stmt->bindParam(":payment_method", $this->payment_method);
@@ -70,6 +69,8 @@ class User{
         $stmt->bindParam(":lastname", $this->lastname);
         $stmt->bindParam(":deleted_at", $this->deleted_at);
         $stmt->bindParam(":token", $this->token);
+        $data = json_encode($this->roles);
+        $stmt->bindParam(":roles", $data);
 
         // execute query
         if($stmt->execute()){
