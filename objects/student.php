@@ -58,5 +58,26 @@ class Student{
         return false;
 
     }
+
+
+    // read one user
+    function readByParent($id){
+
+        // select all query
+        $query = "SELECT
+                *
+            FROM
+                " . $this->table_name . " u
+            WHERE 
+                u.user_id = $id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }
 ?>

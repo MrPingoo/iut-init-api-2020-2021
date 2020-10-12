@@ -72,6 +72,10 @@ class User{
         $data = json_encode($this->roles);
         $stmt->bindParam(":roles", $data);
 
+        $stmt->execute();
+        var_dump($stmt->errorInfo());
+        die();
+
         // execute query
         if($stmt->execute()){
             return $this->conn->lastInsertId();

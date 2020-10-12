@@ -8,6 +8,7 @@ header("Content-Type: application/json; charset=UTF-8");
 // include database and object files
 include_once '../config/database.php';
 include_once '../objects/user.php';
+include_once '../objects/student.php';
 
 // instantiate database and product object
 $database = new Database();
@@ -15,6 +16,7 @@ $db = $database->getConnection();
 
 // initialize object
 $user = new User($db);
+$student = new Student($db);
 
 // read products will be here
 // query products
@@ -24,35 +26,18 @@ $num = $stmt->rowCount();
 // check if more than 0 record found
 if($num>0){
 
-    var_dump($stmt->fetchAll(PDO::FETCH_ASSOC));
+    $user = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    die();
-    // products array
-    $user_arr=array();
-    $products_arr["records"]=array();
-
-    // retrieve our table contents
-    // fetch() is faster than fetchAll()
-    // http://stackoverflow.com/questions/2770630/pdofetchall-vs-pdofetch-in-a-loop
-    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
-        // extract row
-        // this will make $row['name'] to
-        // just $name only
-        extract($row);
-
-        $product_item=array(
-            "id" => $id,
-            "name" => $name,
-        );
-
-        array_push($products_arr["records"], $product_item);
+    if ($user[0]['id']) {
+        $stmtStudents = $student->readByParent($user[0]['id']);
+        $user[0]['students'] = $stmtStudents->fetchAll(PDO::FETCH_ASSOC);
     }
 
     // set response code - 200 OK
     http_response_code(200);
 
     // show products data in json format
-    echo json_encode($products_arr);
+    echo json_encode($user[0]);
 }else{
 
     // set response code - 404 Not found
