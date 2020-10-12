@@ -61,7 +61,7 @@ if(
             $student->lvl = $s['lvl'];
             $student->phone = $s['phone'];
             $student->email = $s['email'];
-            $student->deleted_at = $s['deleted_at'];
+            $student->deleted_at = null;
             $student->user_id = $user_id;
 
             if ($student->create()) {
