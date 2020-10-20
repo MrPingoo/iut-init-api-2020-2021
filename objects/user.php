@@ -72,10 +72,6 @@ class User{
         $data = json_encode($this->roles);
         $stmt->bindParam(":roles", $data);
 
-        $stmt->execute();
-        var_dump($stmt->errorInfo());
-        die();
-
         // execute query
         if($stmt->execute()){
             return $this->conn->lastInsertId();
@@ -96,6 +92,24 @@ class User{
                 " . $this->table_name . " u
             WHERE 
                 u.id = $id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
+
+    // read one user
+    function list($limit = 10, $offset = 0){
+        // select all query
+        $query = "SELECT
+                *
+            FROM
+                " . $this->table_name . " u
+            LIMIT $limit OFFSET $offset";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);
