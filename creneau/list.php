@@ -19,6 +19,7 @@ $database = new Database();
 $db = $database->getConnection();
 
 $creneau = new Creneau($db);
+$creneau_matiere = new CreneauMatiere($db);
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -32,21 +33,21 @@ $num = $stmt->rowCount();
 // check if more than 0 record found
 if($num>0){
 
+    $results = [];
     $creneaux = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($creneaux as $c) {
-        // creneau_matiere
-        // $data['matiere']
-
-        // une fonction dans creneau_matiere.php
-        // récupération des creneau_matiere dont l'ID de ma matiere = $data['matiere']
+        $stmt_matieres = $creneau_matiere->list($c['id'], $data['matiere']);
+        if ($stmt_matieres->rowCount() > 0) {
+            $results[] = $c;
+        }
     }
 
     // set response code - 200 OK
     http_response_code(200);
 
     // show products data in json format
-    echo json_encode($creneaux);
+    echo json_encode($results);
 }else{
 
     // set response code - 404 Not found

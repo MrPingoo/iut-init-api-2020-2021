@@ -43,5 +43,23 @@ class CreneauMatiere {
         return false;
 
     }
+
+    // read one user
+    function list($creneau_id, $matiere_id){
+        // select all query
+        $query = "SELECT
+                *
+            FROM
+                " . $this->table_name . " c
+            WHERE c.creneau_id = '$creneau_id' AND c.matiere_id = '$matiere_id'";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }
 ?>
