@@ -18,8 +18,8 @@ $user = new User($db);
 
 // read products will be here
 // query products
-$limit = $_GET['limit'];
-$offset = $_GET['offset'];
+$limit = (isset($_GET['limit']) ? $_GET['limit'] : null);
+$offset = (isset($_GET['offset']) ? $_GET['offset'] : null);
 if (!empty($limit) && !empty($offset)) {
     $stmt = $user->list($limit, $offset);
 } else {

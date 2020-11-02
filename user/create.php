@@ -54,20 +54,22 @@ if(
         $globalError = false;
 
         foreach ($data['students'] as $s) {
-            $student = new Student($db);
-            $student->civility = $s['civility'];
-            $student->firstname = $s['firstname'];
-            $student->lastname = $s['lastname'];
-            $student->lvl = $s['lvl'];
-            $student->phone = $s['phone'];
-            $student->email = $s['email'];
-            $student->deleted_at = null;
-            $student->user_id = $user_id;
+            if (!$globalError) {
+                $student = new Student($db);
+                $student->civility = $s['civility'];
+                $student->firstname = $s['firstname'];
+                $student->lastname = $s['lastname'];
+                $student->lvl = $s['lvl'];
+                $student->phone = $s['phone'];
+                $student->email = $s['email'];
+                $student->deleted_at = null;
+                $student->user_id = $user_id;
 
-            if ($student->create()) {
-                $globalError = false;
-            } else {
-                $globalError = true;
+                if ($student->create()) {
+                    $globalError = false;
+                } else {
+                    $globalError = true;
+                }
             }
         }
     }
