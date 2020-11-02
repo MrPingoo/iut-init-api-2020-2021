@@ -58,5 +58,24 @@ class Creneau{
         return false;
 
     }
+
+
+    // read one user
+    function list($begin, $end){
+        // select all query
+        $query = "SELECT
+                *
+            FROM
+                " . $this->table_name . " c
+            WHERE c.begin >= '$begin' AND c.end <= '$end'";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }
 ?>
