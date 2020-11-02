@@ -79,5 +79,26 @@ class Student{
 
         return $stmt;
     }
+
+
+    // read one user
+    function find($id){
+
+        // select all query
+        $query = "SELECT
+                *
+            FROM
+                " . $this->table_name . " u
+            WHERE 
+                u.id = $id";
+
+        // prepare query statement
+        $stmt = $this->conn->prepare($query);
+
+        // execute query
+        $stmt->execute();
+
+        return $stmt;
+    }
 }
 ?>

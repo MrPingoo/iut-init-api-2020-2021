@@ -45,13 +45,13 @@ class CreneauMatiere {
     }
 
     // read one user
-    function list($creneau_id, $matiere_id){
+    function list($creneau_id, $matiere_id, $lvl){
         // select all query
         $query = "SELECT
                 *
             FROM
                 " . $this->table_name . " c
-            WHERE c.creneau_id = '$creneau_id' AND c.matiere_id = '$matiere_id'";
+            WHERE c.creneau_id = '$creneau_id' AND c.matiere_id = '$matiere_id' AND c.lvl >= $lvl";
 
         // prepare query statement
         $stmt = $this->conn->prepare($query);

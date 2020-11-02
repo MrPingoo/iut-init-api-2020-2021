@@ -11,6 +11,7 @@ include_once '../config/database.php';
 
 // instantiate product object
 include_once '../objects/creneau.php';
+include_once '../objects/student.php';
 include_once '../objects/creneau_matiere.php';
 
 $globalError = true;
@@ -20,6 +21,7 @@ $db = $database->getConnection();
 
 $creneau = new Creneau($db);
 $creneau_matiere = new CreneauMatiere($db);
+$student = new Student($db);
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -30,6 +32,9 @@ $stmt = $creneau->list($data['begin'], $data['end']);
 
 $num = $stmt->rowCount();
 
+$stmt_student = $student->find($data['student']);
+$st = $stmt_student->fetch();
+
 // check if more than 0 record found
 if($num>0){
 
@@ -37,7 +42,7 @@ if($num>0){
     $creneaux = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($creneaux as $c) {
-        $stmt_matieres = $creneau_matiere->list($c['id'], $data['matiere']);
+        $stmt_matieres = $creneau_matiere->list($c['id'], $data['matiere'], $st['lvl']);
         if ($stmt_matieres->rowCount() > 0) {
             $results[] = $c;
         }
